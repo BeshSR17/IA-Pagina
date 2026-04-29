@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA para Docentes · Guía de Herramientas 2025</title>
+<meta name="description" content="Las 4 herramientas de Inteligencia Artificial más potentes para transformar tu práctica educativa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #07091A;
+  --surface:   rgba(255,255,255,.042);
+  --border:    rgba(255,255,255,.08);
+  --text:      #f0f2ff;
+  --muted:     rgba(240,242,255,.45);
+  --faint:     rgba(240,242,255,.22);
+
+  --canva:     #9333ea;
+  --canva-hi:  #c084fc;
+  --canva-glow:rgba(147,51,234,.28);
+
+  --gpt:       #10a37f;
+  --gpt-hi:    #6ee7b7;
+  --gpt-glow:  rgba(16,163,127,.25);
+
+  --gemini:    #4285f4;
+  --gemini-hi: #93c5fd;
+  --gemini-glow:rgba(66,133,244,.25);
+
+  --nb:        #d97706;
+  --nb-hi:     #fcd34d;
+  --nb-glow:   rgba(217,119,6,.25);
+
+  --radius-card: 22px;
+  --radius-sm:   11px;
+  --font-display:'Syne', sans-serif;
+  --font-body:   'Plus Jakarta Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ─────────────────────────────────────────
+   BACKGROUND SCENE
+───────────────────────────────────────── */
+.scene {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+
+.scene-mesh {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 40%,  rgba(120,60,255,.20) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 55% at 90% 10%,  rgba(236,72,153,.17) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 80% 90%,  rgba(6,182,212,.14)  0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 50% 50%,  rgba(7,9,26,1)       0%, transparent 100%);
+}
+
+.scene-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .55;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.orb-1 { width: 500px; height: 500px; top: -180px; left: -180px; background: radial-gradient(circle, rgba(124,58,237,.35), transparent 70%); animation-duration: 22s; }
+.orb-2 { width: 380px; height: 380px; bottom: -120px; right: -100px; background: radial-gradient(circle, rgba(236,72,153,.3), transparent 70%); animation-duration: 18s; animation-delay: -6s; }
+.orb-3 { width: 280px; height: 280px; top: 40%; right: 15%; background: radial-gradient(circle, rgba(6,182,212,.22), transparent 70%); animation-duration: 14s; animation-delay: -3s; }
+
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(30px, -20px) scale(1.05); }
+  100% { transform: translate(-20px, 30px) scale(.95); }
+}
+
+/* ─────────────────────────────────────────
+   LAYOUT WRAPPER
+───────────────────────────────────────── */
+.wrapper {
+  position: relative; z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+/* ─────────────────────────────────────────
+   HEADER / NAV
+───────────────────────────────────────── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 0;
+  margin-bottom: 72px;
+  opacity: 0;
+  animation: fadeUp .6s .1s ease forwards;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(124,58,237,.45);
+  flex-shrink: 0;
+}
+
+.brand-icon svg { width: 22px; height: 22px; }
+
+.brand-text strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.2px;
+}
+
+.brand-text span {
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.nav-badges {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.badge {
+  padding: 7px 18px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.badge-ghost {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: border-color .25s, color .25s;
+}
+.badge-ghost:hover { border-color: rgba(255,255,255,.25); color: var(--text); }
+
+.badge-glow {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #fff;
+  box-shadow: 0 3px 18px rgba(124,58,237,.4);
+}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+.hero {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border: 1px solid rgba(167,139,250,.3);
+  border-radius: 99px;
+  background: rgba(124,58,237,.1);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp .6s .2s ease forwards;
+}
+
+.hero-eyebrow .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #a78bfa;
+  box-shadow: 0 0 8px #a78bfa;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.7); }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -2.5px;
+  color: var(--text);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp .7s .3s ease forwards;
+}
+
+.hero h1 .grad {
+  background: linear-gradient(95deg, #a78bfa 0%, #ec4899 50%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  max-width: 580px;
+  margin: 0 auto 48px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeUp .7s .4s ease forwards;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  opacity: 0;
+  animation: fadeUp .7s .5s ease forwards;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -1px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--faint);
+  letter-spacing: .4px;
+  margin-top: 2px;
+}
+
+.stat-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+}
+
+/* ─────────────────────────────────────────
+   SECTION LABEL
+───────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp .6s .55s ease forwards;
+}
+
+.section-label span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─────────────────────────────────────────
+   CARDS GRID
+───────────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 80px;
+}
+
+@media (max-width: 1024px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .cards { grid-template-columns: 1fr; } }
+
+.card {
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
+  opacity: 0;
+  animation: fadeUp .7s ease forwards;
+}
+
+.card:nth-child(1) { animation-delay: .65s; }
+.card:nth-child(2) { animation-delay: .78s; }
+.card:nth-child(3) { animation-delay: .91s; }
+.card:nth-child(4) { animation-delay:1.04s; }
+
+.card:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
+/* accent top bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  transition: height .3s ease;
+}
+
+.card:hover::before { height: 4px; }
+
+.card-canva::before    { background: linear-gradient(90deg, var(--canva), var(--canva-hi), #e879f9); }
+.card-chatgpt::before  { background: linear-gradient(90deg, var(--gpt), var(--gpt-hi)); }
+.card-gemini::before   { background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335); }
+.card-notebook::before { background: linear-gradient(90deg, var(--nb), var(--nb-hi)); }
+
+.card-canva   { box-shadow: 0 0 50px var(--canva-glow) inset, 0 8px 32px rgba(0,0,0,.5); }
+.card-chatgpt { box-shadow: 0 0 50px var(--gpt-glow) inset, 0 8px 32px rgba(0,0,0,.5); }
+.card-gemini  { box-shadow: 0 0 50px var(--gemini-glow) inset, 0 8px 32px rgba(0,0,0,.5); }
+.card-notebook{ box-shadow: 0 0 50px var(--nb-glow) inset, 0 8px 32px rgba(0,0,0,.5); }
+
+.card-canva:hover    { border-color: rgba(147,51,234,.4);  box-shadow: 0 0 60px var(--canva-glow) inset, 0 24px 60px rgba(147,51,234,.2); }
+.card-chatgpt:hover  { border-color: rgba(16,163,127,.4);  box-shadow: 0 0 60px var(--gpt-glow) inset, 0 24px 60px rgba(16,163,127,.2); }
+.card-gemini:hover   { border-color: rgba(66,133,244,.4);  box-shadow: 0 0 60px var(--gemini-glow) inset, 0 24px 60px rgba(66,133,244,.2); }
+.card-notebook:hover { border-color: rgba(217,119,6,.4);   box-shadow: 0 0 60px var(--nb-glow) inset, 0 24px 60px rgba(217,119,6,.2); }
+
+/* ── Card body ── */
+.card-body {
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0;
+}
+
+/* Logo row */
+.logo-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.logo-wrap {
+  width: 54px; height: 54px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.card:hover .logo-wrap {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+.card-canva   .logo-wrap { background: rgba(147,51,234,.2);  border: 1px solid rgba(196,131,252,.2); box-shadow: 0 4px 20px rgba(147,51,234,.3); }
+.card-chatgpt .logo-wrap { background: rgba(16,163,127,.18); border: 1px solid rgba(110,231,183,.18); box-shadow: 0 4px 20px rgba(16,163,127,.3); }
+.card-gemini  .logo-wrap { background: rgba(66,133,244,.18); border: 1px solid rgba(147,197,253,.18); box-shadow: 0 4px 20px rgba(66,133,244,.3); }
+.card-notebook .logo-wrap{ background: rgba(217,119,6,.18);  border: 1px solid rgba(252,211,77,.18);  box-shadow: 0 4px 20px rgba(217,119,6,.3); }
+
+.logo-wrap svg { width: 30px; height: 30px; }
+
+.card-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid;
+  transition: opacity .2s;
+}
+
+.card-canva   .card-tag { color: var(--canva-hi);  border-color: rgba(196,131,252,.3); background: rgba(147,51,234,.12); }
+.card-chatgpt .card-tag { color: var(--gpt-hi);    border-color: rgba(110,231,183,.3); background: rgba(16,163,127,.1); }
+.card-gemini  .card-tag { color: var(--gemini-hi); border-color: rgba(147,197,253,.3); background: rgba(66,133,244,.1); }
+.card-notebook .card-tag{ color: var(--nb-hi);     border-color: rgba(252,211,77,.3);  background: rgba(217,119,6,.1); }
+
+/* Tool name */
+.tool-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.4px;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.tool-sub {
+  font-size: 11.5px;
+  color: var(--faint);
+  font-weight: 500;
+  letter-spacing: .2px;
+  margin-bottom: 18px;
+}
+
+/* Divider */
+.div {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 18px;
+}
+
+/* Summary */
+.summary {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+/* Features */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 24px;
+}
+
+.feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(240,242,255,.72);
+  transition: color .2s;
+}
+
+.card:hover .feat { color: rgba(240,242,255,.88); }
+
+.feat-icon {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+}
+
+.card-canva   .feat-icon { background: rgba(147,51,234,.25); color: var(--canva-hi); }
+.card-chatgpt .feat-icon { background: rgba(16,163,127,.2);  color: var(--gpt-hi); }
+.card-gemini  .feat-icon { background: rgba(66,133,244,.2);  color: var(--gemini-hi); }
+.card-notebook .feat-icon{ background: rgba(217,119,6,.2);   color: var(--nb-hi); }
+
+/* CTA button */
+.card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.25);
+  text-decoration: none;
+  transition: border-color .25s, background .25s, transform .2s;
+  margin-top: auto;
+  gap: 12px;
+}
+
+.card-cta:hover {
+  background: rgba(0,0,0,.4);
+  transform: translateY(-1px);
+}
+
+.card-canva   .card-cta:hover { border-color: rgba(147,51,234,.45); }
+.card-chatgpt .card-cta:hover { border-color: rgba(16,163,127,.45); }
+.card-gemini  .card-cta:hover { border-color: rgba(66,133,244,.45); }
+.card-notebook .card-cta:hover{ border-color: rgba(217,119,6,.45); }
+
+.cta-left .cta-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  font-weight: 600;
+  color: var(--faint);
+  margin-bottom: 3px;
+}
+
+.cta-url {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -.1px;
+}
+
+.card-canva   .cta-url { color: var(--canva-hi); }
+.card-chatgpt .cta-url { color: var(--gpt-hi); }
+.card-gemini  .cta-url { color: var(--gemini-hi); }
+.card-notebook .cta-url{ color: var(--nb-hi); }
+
+.cta-arrow {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: background .25s, border-color .25s, color .25s;
+}
+
+.card-canva   .card-cta:hover .cta-arrow { background: rgba(147,51,234,.3); border-color: rgba(196,131,252,.4); color: var(--canva-hi); }
+.card-chatgpt .card-cta:hover .cta-arrow { background: rgba(16,163,127,.25); border-color: rgba(110,231,183,.4); color: var(--gpt-hi); }
+.card-gemini  .card-cta:hover .cta-arrow { background: rgba(66,133,244,.25); border-color: rgba(147,197,253,.4); color: var(--gemini-hi); }
+.card-notebook .card-cta:hover .cta-arrow{ background: rgba(217,119,6,.25);  border-color: rgba(252,211,77,.4);  color: var(--nb-hi); }
+
+/* ─────────────────────────────────────────
+   COMPARISON TABLE
+───────────────────────────────────────── */
+.comparison {
+  margin-bottom: 80px;
+  opacity: 0;
+  animation: fadeUp .7s 1.2s ease forwards;
+}
+
+.comparison h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.8px;
+  margin-bottom: 6px;
+}
+
+.comparison-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.table-wrap {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead tr {
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+thead th:first-child { width: 22%; }
+
+tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: background .2s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,.025); }
+
+tbody td {
+  padding: 14px 20px;
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+tbody td:first-child {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.check { color: #4ade80; font-size: 16px; }
+.dash  { color: var(--faint); }
+.partial{ color: #fbbf24; font-size: 13px; }
+
+/* ─────────────────────────────────────────
+   TIPS SECTION
+───────────────────────────────────────── */
+.tips {
+  margin-bottom: 80px;
+  opacity: 0;
+  animation: fadeUp .7s 1.4s ease forwards;
+}
+
+.tips h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.8px;
+  margin-bottom: 6px;
+}
+
+.tips-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) { .tips-grid { grid-template-columns: 1fr; } }
+
+.tip-card {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  transition: transform .3s ease, border-color .3s;
+}
+
+.tip-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,.14);
+}
+
+.tip-num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.04));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tip-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -.2px;
+}
+
+.tip-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp .6s 1.6s ease forwards;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-brand .brand-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+}
+
+.footer-brand strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.2px;
+}
+
+.footer-brand span {
+  display: block;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 12.5px;
+  color: var(--faint);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+/* ─────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- Background scene -->
+<div class="scene">
+  <div class="scene-mesh"></div>
+  <div class="scene-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="wrapper">
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <strong>IA para Docentes</strong>
+        <span>Taller educativo · 2025</span>
+      </div>
+    </div>
+    <div class="nav-badges">
+      <span class="badge badge-ghost">4 Herramientas</span>
+      <span class="badge badge-glow">Guía Gratuita</span>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      Taller de Inteligencia Artificial para Docentes
+    </div>
+    <h1>
+      Transforma tu<br>
+      <span class="grad">práctica educativa</span><br>
+      con Inteligencia Artificial
+    </h1>
+    <p class="hero-sub">
+      Descubre las 4 herramientas de IA más potentes para diseñar clases, crear contenido personalizado y potenciar el aprendizaje de tus alumnos — sin conocimientos técnicos.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Herramientas IA</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Acceso gratuito</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Posibilidades</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CARDS ── -->
+  <div class="section-label">
+    <span>Herramientas principales</span>
+  </div>
+
+  <div class="cards">
+
+    <!-- CANVA -->
+    <div class="card card-canva">
+      <div class="card-body">
+        <div class="logo-row">
+          <div class="logo-wrap" style="overflow:hidden;padding:0;border-radius:14px;">
+            <img src="images/CANVA.jpg" alt="Canva" style="width:54px;height:54px;object-fit:cover;display:block;border-radius:14px;">
+          </div>
+          <span class="card-tag">Diseño Visual</span>
+        </div>
+        <div class="tool-name">Canva IA</div>
+        <div class="tool-sub">Plataforma de diseño con IA</div>
+        <div class="div"></div>
+        <p class="summary">Crea presentaciones, infografías y material didáctico de forma profesional. La IA genera imágenes, sugiere diseños y redacta textos automáticamente.</p>
+        <div class="features">
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Generación de imágenes con IA
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Plantillas educativas listas
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Redacción y diseño automático
+          </div>
+        </div>
+        <a href="https://canva.com" target="_blank" rel="noopener" class="card-cta">
+          <div class="cta-left">
+            <div class="cta-label">Acceder ahora</div>
+            <div class="cta-url">canva.com</div>
+          </div>
+          <div class="cta-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- CHATGPT -->
+    <div class="card card-chatgpt">
+      <div class="card-body">
+        <div class="logo-row">
+          <div class="logo-wrap" style="overflow:hidden;padding:0;border-radius:14px;background:#faf3f3;">
+            <img src="images/Chatgpt.png" alt="ChatGPT" style="width:54px;height:54px;object-fit:contain;display:block;padding:8px;">
+          </div>
+          <span class="card-tag">Asistente IA</span>
+        </div>
+        <div class="tool-name">ChatGPT</div>
+        <div class="tool-sub">OpenAI · chat.openai.com</div>
+        <div class="div"></div>
+        <p class="summary">Asistente conversacional de OpenAI para crear contenido educativo, planificar clases y generar evaluaciones personalizadas de forma eficiente.</p>
+        <div class="features">
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Planificación de clases al instante
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Crea ejercicios y evaluaciones
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Ideas creativas pedagógicas
+          </div>
+        </div>
+        <a href="https://chat.openai.com" target="_blank" rel="noopener" class="card-cta">
+          <div class="cta-left">
+            <div class="cta-label">Acceder ahora</div>
+            <div class="cta-url">chat.openai.com</div>
+          </div>
+          <div class="cta-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GEMINI -->
+    <div class="card card-gemini">
+      <div class="card-body">
+        <div class="logo-row">
+          <div class="logo-wrap" style="overflow:hidden;padding:0;border-radius:14px;background:#0f0f0f;">
+            <img src="images/Gemini.png" alt="Gemini" style="width:54px;height:54px;object-fit:contain;display:block;padding:6px;">
+          </div>
+          <span class="card-tag">Multimodal</span>
+        </div>
+        <div class="tool-name">Google Gemini</div>
+        <div class="tool-sub">Google · gemini.google.com</div>
+        <div class="div"></div>
+        <p class="summary">IA multimodal de Google con integración perfecta en Workspace. Analiza texto e imágenes, crea materiales en Docs y Sheets, ideal para el aula.</p>
+        <div class="features">
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Integrado con Docs y Slides
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Analiza texto, imágenes y código
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Evalúa trabajos con contexto
+          </div>
+        </div>
+        <a href="https://gemini.google.com" target="_blank" rel="noopener" class="card-cta">
+          <div class="cta-left">
+            <div class="cta-label">Acceder ahora</div>
+            <div class="cta-url">gemini.google.com</div>
+          </div>
+          <div class="cta-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- NOTEBOOKLM -->
+    <div class="card card-notebook">
+      <div class="card-body">
+        <div class="logo-row">
+          <div class="logo-wrap" style="overflow:hidden;padding:0;border-radius:14px;background:#f0f4ff;">
+            <img src="images/Notebook lm.jpg" alt="NotebookLM" style="width:54px;height:54px;object-fit:contain;display:block;padding:4px;">
+          </div>
+          <span class="card-tag">Investigación</span>
+        </div>
+        <div class="tool-name">NotebookLM</div>
+        <div class="tool-sub">Google Labs · notebooklm.google.com</div>
+        <div class="div"></div>
+        <p class="summary">Asistente de Google Labs que trabaja exclusivamente con tus propias fuentes: PDFs, documentos y videos. Genera resúmenes y guías de estudio en segundos.</p>
+        <div class="features">
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Aprende de tus propios documentos
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            50 cuadernos · +100k palabras
+          </div>
+          <div class="feat">
+            <span class="feat-icon">✦</span>
+            Completamente gratuito
+          </div>
+        </div>
+        <a href="https://notebooklm.google.com" target="_blank" rel="noopener" class="card-cta">
+          <div class="cta-left">
+            <div class="cta-label">Acceder ahora</div>
+            <div class="cta-url">notebooklm.google.com</div>
+          </div>
+          <div class="cta-arrow">↗</div>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /cards -->
+
+  <!-- ── COMPARISON TABLE ── -->
+  <div class="comparison">
+    <h2>Comparativa rápida</h2>
+    <p class="comparison-sub">¿Cuál usar para cada tarea?</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Función</th>
+            <th>Canva IA</th>
+            <th>ChatGPT</th>
+            <th>Gemini</th>
+            <th>NotebookLM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Diseño visual</td>
+            <td><span class="check">✓</span> Nativo</td>
+            <td><span class="dash">—</span></td>
+            <td><span class="partial">Básico</span></td>
+            <td><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td>Planificación de clases</td>
+            <td><span class="partial">Parcial</span></td>
+            <td><span class="check">✓</span> Excelente</td>
+            <td><span class="check">✓</span> Muy bueno</td>
+            <td><span class="partial">Con tus docs</span></td>
+          </tr>
+          <tr>
+            <td>Crear evaluaciones</td>
+            <td><span class="dash">—</span></td>
+            <td><span class="check">✓</span> Excelente</td>
+            <td><span class="check">✓</span> Muy bueno</td>
+            <td><span class="check">✓</span> Con tus docs</td>
+          </tr>
+          <tr>
+            <td>Análisis de documentos</td>
+            <td><span class="dash">—</span></td>
+            <td><span class="partial">Limitado</span></td>
+            <td><span class="check">✓</span> Muy bueno</td>
+            <td><span class="check">✓</span> Especializado</td>
+          </tr>
+          <tr>
+            <td>Integración Google</td>
+            <td><span class="dash">—</span></td>
+            <td><span class="dash">—</span></td>
+            <td><span class="check">✓</span> Nativo</td>
+            <td><span class="check">✓</span> Sí</td>
+          </tr>
+          <tr>
+            <td>Gratuito</td>
+            <td><span class="check">✓</span> Plan free</td>
+            <td><span class="check">✓</span> Plan free</td>
+            <td><span class="check">✓</span> Plan free</td>
+            <td><span class="check">✓</span> 100% gratis</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TIPS ── -->
+  <div class="tips">
+    <h2>Consejos para empezar</h2>
+    <p class="tips-sub">Saca el máximo partido desde el primer día</p>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-num">01</div>
+        <div class="tip-title">Empieza con ChatGPT</div>
+        <p class="tip-text">Es el punto de entrada ideal. Pídele que planifique una clase completa con objetivos, actividades y evaluación. Te sorprenderá en segundos.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">02</div>
+        <div class="tip-title">Diseña con Canva</div>
+        <p class="tip-text">Convierte el contenido generado en presentaciones visuales impactantes. Usa las plantillas educativas y la IA de diseño para resultados profesionales.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">03</div>
+        <div class="tip-title">Profundiza con NotebookLM</div>
+        <p class="tip-text">Sube tus libros de texto o materiales del curso. NotebookLM los analiza y te permite hacerle preguntas directamente sobre tu propio contenido.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <strong>IA para Docentes</strong>
+        <span>Taller educativo 2025</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="https://canva.com" target="_blank">Canva</a>
+      <a href="https://chat.openai.com" target="_blank">ChatGPT</a>
+      <a href="https://gemini.google.com" target="_blank">Gemini</a>
+      <a href="https://notebooklm.google.com" target="_blank">NotebookLM</a>
+    </div>
+    <div class="footer-copy">Hecho con ❤️ para educadores · 2025</div>
+  </footer>
+
+</div><!-- /wrapper -->
+</body>
+</html>
