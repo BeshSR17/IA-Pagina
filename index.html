@@ -776,6 +776,173 @@ footer {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+
+/* ─────────────────────────────────────────
+   MOBILE RESPONSIVE (max 768px)
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* WRAPPER */
+  .wrapper {
+    padding: 0 16px 60px;
+  }
+
+  /* NAV */
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .nav-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 48px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 9vw, 52px);
+    letter-spacing: -1.5px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    padding: 0 4px;
+  }
+
+  .hero-stats {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-num {
+    font-size: 22px;
+  }
+
+  .stat-sep {
+    display: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    padding: 5px 14px;
+  }
+
+  /* CARDS */
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .card-body {
+    padding: 22px 18px 18px;
+  }
+
+  /* COMPARISON TABLE — scroll horizontal */
+  .comparison {
+    margin-bottom: 48px;
+  }
+
+  .comparison h2,
+  .tips h2 {
+    font-size: 22px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+  }
+
+  table {
+    min-width: 560px;
+    font-size: 12px;
+  }
+
+  thead th,
+  tbody td {
+    padding: 12px 14px;
+  }
+
+  /* Hint visual de scroll */
+  .table-wrap::after {
+    content: '← desliza →';
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(240,242,255,.3);
+    padding: 8px 0 4px;
+    letter-spacing: .5px;
+  }
+
+  /* TIPS */
+  .tips {
+    margin-bottom: 48px;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .tip-card {
+    padding: 20px;
+  }
+
+  .tip-num {
+    font-size: 32px;
+  }
+
+  /* FOOTER */
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 0;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+/* ─────────────────────────────────────────
+   EXTRA SMALL (max 400px)
+───────────────────────────────────────── */
+@media (max-width: 400px) {
+
+  .hero h1 {
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
+  .tool-name {
+    font-size: 19px;
+  }
+
+  .hero-stats {
+    gap: 16px;
+  }
+
+  .stat-num {
+    font-size: 20px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1104,7 +1271,7 @@ footer {
       <a href="https://gemini.google.com" target="_blank">Gemini</a>
       <a href="https://notebooklm.google.com" target="_blank">NotebookLM</a>
     </div>
-    <div class="footer-copy">Hecho con ❤️ para educadores · 2025</div>
+    <div class="footer-copy">Hecho con ❤️ para educadores · 2026</div>
   </footer>
 
 </div><!-- /wrapper -->
